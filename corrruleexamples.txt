@@ -1,0 +1,74 @@
+{"EQ":[data,data],
+ "NEQ":[data,data],
+ "GT":[data,data],
+ "GE:[data,data],
+ "LT":[data,data],
+ "LE":[data,data],
+ "REX":[data,data],
+ "NREX":[data,data],
+ "IREX":[data,data],
+ "IRANGE":[data,range,range],
+ "NRANGE":[data,range,range],
+ "ALIST":[data,list],
+ "ILIST":[data,list],
+ "NLIST":[data,list],
+ "IN":[data,data],
+ "NIN":[data,data],
+ "IPCIDR":[ip,cidr],
+ "IPRANGE":[ip,range,range],
+ "NIPRANGE":[ip,range,range],
+ "COUNT":[[data],limit,time],
+ "DCOUNT":[[data],[distinct],limit,time]
+ "OR":{}}
+
+{"rulename":"Source IP in Established ThreatLists",
+ "id":"100000005",
+ "descp":"Source IP in log is in a ThreatList",
+ "score":50,
+ "sev":1,
+ "pri":5,
+ "rule":{"OR":{"ILIST":["sip","portsweeplist"],
+               "ILIST":["sip","portscanlist"],
+               "ILIST":["sip","sshbruteforcelist"],
+               "ILIST":["sip","badhostlist']
+        }
+ }
+}
+
+{"rulename":"Port Scan Detected",
+  "id":"10000000",
+  "descp":"Rule Fires for some kind of port scan",
+  "score":20,
+  "sev":3,
+  "pri":3,
+  "rule":{"EQ":["blocked","false"],
+          "DCOUNT":[["sip"],["dport"],100,6000],
+          "ALIST":['sip','portscanlist']
+ }
+}
+
+{"rulename":"Port Sweep Detected",
+  "id":"10000001",
+  "descp":"Rule Fires when the same ip trys to hit 50 hosts in 30seconds on same port",
+  "score":20,
+  "sev":3,
+  "pri":3,
+  "rule":{"DCOUNT":[["sip","dport"],["dip"],50,30],
+          "ALIST":["sip","portsweeplist"]
+  }
+}
+
+{"rulename":"SSH Brute Force Attempt TCP Drops",
+ "id":"100000002",
+ "descp":"Rule triggers on failed attempts with same ip 10 times in 5 mins",
+ "score":20,
+ "sev":3,
+ "pri":3,
+ "rule":{"EQ":["dport","22"],
+         "EQ":["proto","tcp"],
+         "EQ":["blocked","false"],
+         "COUNT":[["sip","dip"],10,60],
+         "ALIST":['sip','sshbruteforcelist'],
+         "ALIST":['sip','badhostlist']
+  }
+}

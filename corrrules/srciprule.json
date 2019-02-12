@@ -1,0 +1,13 @@
+{"rulename":"Source IP in Established ThreatLists",
+ "id":"100000005",
+ "descp":"Source IP in log is in a ThreatList",
+ "score":50,
+ "sev":1,
+ "pri":5,
+ "rule":[
+        {"NEQ":["src","10.0.0.1"]},
+        {"EQ":["dst","10.2.0.2"]},
+        {"REX":["src","10.+\s2.0"]},
+        {"IPRANGE":["dst","10.2.0.1","10.2.0.10"]},
+        {"ALIST":["dst","BADIPLIST"]}]
+}

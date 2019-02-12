@@ -1,0 +1,73 @@
+<parsers>
+	<detail>
+		<rname>Cisco-ASA Firewall Rule</rname>
+		<rkey>CISCO-ASA</rkey>
+		<rtype>Firewall</rtype>
+		<rid>0000001</rid>
+	</detail>
+	<triggers>
+		<trigger>%ASA</trigger>
+		<trigger>%ASA-</trigger>
+    </triggers>
+	<prerules>
+		<prerule>$SCISCOTIMEHOST</prerule>
+	</prerules>
+	<rules>
+		<rule aname="Firewall Built Outbound ICMP Connection" 
+		      enabled="False" 
+			  id="000000000001" 
+			  atype="Debug Traffic">
+			  <payload>%ASA-6-302020</payload>
+			  <npayload>inbound</npayload>
+			  <info>faddr\s$SFADDR+[^ ]+\sgaddr+\s+$SGADDR+[^ ]+\sladdr\s$SLADDR</info>
+		</rule>
+		<rule aname="Firewall Built Inbound ICMP Connection" 
+		      enabled="False" 
+			  id="000000000002" 
+			  atype="Debug Traffic">
+				  <payload>%ASA-6-302020</payload>
+				  <npayload>outnbound</npayload>
+				  <info>faddr\s$SFADDR+[^ ]+\sgaddr+\s+$SGADDR+[^ ]+\sladdr\s$SLADDR</info>
+		</rule>
+		<rule aname="Firewall Built OutBound UDP Connection" 
+		      enabled="False" 
+			  id="000000000003" 
+			  atype="Debug Traffic">
+				<payload>%ASA-6-302015</payload>
+				<npayload>inbound</npayload>
+				<info>$SSRC/$SSPT\s\($IP\/$PORT\)\s.*\s.*:$SDST/$SDPT</info>
+		</rule>
+		<rule aname="Firewall Built InBound UDP Connection" 
+		      enabled="False" 
+			  id="000000000004" 
+			  atype="Debug Traffic">
+				  <payload>%ASA-6-302015</payload>
+				  <npayload>outbound</npayload>
+				  <info>$SSRC/$SSPT\s\($IP\/$PORT\)\s.*\s.*:$SDST/$SDPT</info>
+		</rule>
+		<rule aname="Firewall Built OutBound TCP Connection" 
+		      enabled="False" 
+			  id="000000000005" 
+			  atype="Debug Traffic">
+				  <payload>%ASA-6-302013</payload>
+				  <npayload>inbound</npayload>
+				  <info>$SSRC/$SSPT\s\($IP\/$PORT\)\s.*\s.*:$SDST/$SDPT</info>
+		</rule>
+		<rule aname="Firewall Deny TCP (no connection)" 
+		      enabled="False" 
+			  id="000000000006" 
+			  atype="Debug Traffic">
+				  <payload>%ASA-6-106015:\sDeny\sTCP</payload>
+				  <npayload>None</npayload>
+				  <info>\(no\sconnection\)\sfrom\s$SSRC\/$SSPT\sto\s$SDST\/$SDPT</info>
+		</rule>
+		<rule aname="Firewall Deny Protocol" 
+		      enabled="False" 
+			  id="000000000007" 
+			  atype="Debug Traffic">
+				  <payload>%ASA-4-106023:\sDeny\sprotocol</payload>
+				  <npayload>None</npayload>
+				  <info>$SSRC.*?:$SDST</info>
+		</rule>
+	</rules>
+</parsers>

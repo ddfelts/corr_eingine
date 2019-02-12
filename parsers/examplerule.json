@@ -1,0 +1,20 @@
+{"rulename":"tester",
+ "rulekeyid":"CISCO0001",
+ "rulekey":"CiscoLogs",
+ "triggers":["%ASA","%ASA-"],
+ "prerule":["$SCISCOTIMEHOST"],
+ "rules":[{"name":"tester",
+           "id":"000000001",
+           "type":"DebugTraffic",
+           "payload":"%ASA-6-302020",
+           "npayload":"inbound",
+           "info":'faddr\s$SFADDR+[^ ]+\sgaddr+\s+$SGADDR+[^ ]+\sladdr\s$SLADDR'
+           },
+           {"name":"tester2",
+           "id":"000000002",
+           "type":"DebugTraffic",
+           "payload":"%ASA-6-302021",
+           "npayload":"outbound",
+           "info":'faddr\s$SFADDR+[^ ]+\sgaddr+\\s+$SGADDR+[^ ]+\sladdr\s$SLADDR'
+           }]
+}        
